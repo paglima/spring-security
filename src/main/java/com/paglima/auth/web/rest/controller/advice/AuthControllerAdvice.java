@@ -1,5 +1,8 @@
-package com.paglima.auth.web.rest.controller;
+package com.paglima.auth.web.rest.controller.advice;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -19,8 +22,14 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({ AccessDeniedException.class })
-    public void handleAccessDeniedException(Exception exc, HttpServletResponse response) {
-        //response.setStatus(401);
+    public ResponseEntity<ObjectNode> unauthorized(Exception exc, HttpServletResponse response) {
+        JsonNodeFactory factory = JsonNodeFactory.instance;
+        ObjectNode rootNode = factory.objectNode();
+        rootNode.put("httpStatusCode", 401);
+        rootNode.put("errorCode", "401");
+        rootNode.put("message", "Usuário não autenticado!");
+
+        return new ResponseEntity<>(rootNode, HttpStatus.UNAUTHORIZED);
     }
 
 }

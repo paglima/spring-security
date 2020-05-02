@@ -15,25 +15,19 @@ public class FoodSupplementController {
 
     public static final String ENDPOINT = "/food-sup";
 
-    private static final String TOKEN_HEADER_PARAM = "X-Pricing-Token";
-    private static final String AUTHENTICATED = "isAuthenticated()";
-
-    private static final String POST_INFO_MESSAGE = "Recebida requisicao para criar token para o usuario [:username].";
-
     @Autowired
     public FoodSupplementController() {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     public String create(FoodSupplementRequest request) throws Exception {
         return "OK";
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/{sku}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public FoodSupplementRequest get(@PathVariable String sku) throws Exception {
         return FoodSupplementRequest.builder().sku("12345").carbohydrate(10D).protein(30D).fat(1D).build();
     }

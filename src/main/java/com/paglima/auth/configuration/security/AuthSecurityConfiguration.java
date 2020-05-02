@@ -1,7 +1,6 @@
 package com.paglima.auth.configuration.security;
 
 import com.paglima.auth.configuration.security.filter.CustomBasicAuthenticationFilter;
-import com.paglima.auth.configuration.security.handler.AccessDeniedExceptionHandler;
 import com.paglima.auth.configuration.security.provider.LocalAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -36,9 +35,7 @@ public class AuthSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.addFilterBefore(new CustomBasicAuthenticationFilter(authenticationManager()), CustomBasicAuthenticationFilter.class)
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .exceptionHandling().accessDeniedHandler(new AccessDeniedExceptionHandler());
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     }
 
